@@ -1,0 +1,44 @@
+<project name="gproject" default="build" basedir=".">
+  <description>
+    simple example build file
+  </description>
+  <!-- set global properties for this build -->
+  <property name="src.dir" location="src/main/java"/>
+  <property name="build.dir" location="build"/>
+  <property name="target.dir" location="target"/>
+
+  <target name="init">
+    <!-- Create the time stamp -->
+    <tstamp/>
+    <!-- Create the build directory structure used by compile -->
+    <mkdir dir="${build.dir}"/>
+  </target>
+
+  <target name="compile" depends="init"
+        description="compile the source">
+    <!-- Compile the Java code from ${src} into ${build} -->
+    <javac srcdir="${src.dir}" destdir="${build.dir}"/>
+  </target>
+
+  <target name="build" depends="compile"
+        description="generate the distribution">
+    <!-- Create the distribution directory -->
+    <mkdir dir="${target.dir}/lib"/>
+
+    <!-- Put everything in ${build} into the MyProject-${DSTAMP}.jar file -->
+    <jar jarfile="${target.dir}/lib/gproject.jar" basedir="${build.dir}"/>
+  </target>
+
+  <target name="clean"
+        description="clean up">
+    <!-- Delete the ${build} and ${dist} directory trees -->
+    <delete dir="${build.dir}"/>
+    <delete dir="${target.dir}"/>
+  </target>
+  <target name="zip">
+     <zip destfile="release/gproject.zip">
+        <zipfileset dir="bin" prefix="bin"/>
+        <zipfileset dir="target/lib" prefix="lib"/>
+     </zip>
+    </target>
+</project>
